@@ -1,0 +1,33 @@
+<% include ../partials/header %>
+
+<div class="container">
+  <header class="jumbotron">
+    <div class="container">
+      <h1>Welcome To Project Chatting!</h1>
+      <p>Chat with your team mates to be more productive</p>
+      <p>
+        <a class="btn btn-primary btn-large" href="/projects/new">Create New Project</a>
+      </p>
+    </div>
+  </header>
+
+  <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+    <% user.forEach(function(project) { %>
+      <div class="col-md-3 col-sm-6">
+        <div class="thumbnail">
+          <img src="<%= project.image %>" alt="">
+          <div class="caption">
+            <h4><%= project.name %></h4>
+          </div>
+          <p>
+            <a href="/projects/<%= project._id %>" class="btn btn-primary">Start Chatting!</a>
+          </p>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+
+</div>
+
+
+<% include ../partials/footer %>

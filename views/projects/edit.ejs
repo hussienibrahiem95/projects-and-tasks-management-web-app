@@ -1,0 +1,34 @@
+<% include ../partials/header %>
+
+<div class="container">
+
+  <div class="row">
+
+    <h1 style="text-align: center;">Edit: <%= project.name %></h1>
+
+    <div style="width: 30%; margin: 25px auto;">
+      <form action="/projects/<%= project._id %>?_method=put" method="POST">
+        <div class="form-group">
+          <input class="form-control" type="text" name="project[name]" placeholder="name" value="<%= project.name %>" required>
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="text" name="project[image]" placeholder="image url" value="<%= project.image %>" required>
+        </div>
+        <div class="form-group">
+          <textarea class="form-control" name="project[description]" placeholder="description"><%= project.description %></textarea>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-lg btn-primary btn-block">Submit</button>
+        </div>
+      </form>
+      <form id="delete-form" action="/projects/<%=project._id %>?_method=DELETE" method="POST">
+        <div class="form-group">
+          <input type="submit" class="btn btn-md btn-danger pull-right" value="Delete">
+        </div>
+      </form>
+      <a href="/projects">Go Back</a>
+    </div>
+  </div>
+</div>
+
+<% include ../partials/footer %>

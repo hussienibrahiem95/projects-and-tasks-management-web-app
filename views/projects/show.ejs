@@ -1,0 +1,208 @@
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+<title><%= project.name %></title>
+<script src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'></script><script src='//production-assets.codepen.io/assets/editor/live/events_runner-73716630c22bbc8cff4bd0f07b135f00a0bdc5d14629260c3ec49e5606f98fdd.js'></script><script src='//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js'></script>
+<link rel="icon" href="https://sharepointmaven.com/wp-content/uploads/2015/12/project-management-software-icon.png">
+
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
+
+<script src="https://use.typekit.net/hoy3lrg.js"></script>
+<script>try{Typekit.load({ async: true });}catch(e){}</script>
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
+<link rel="stylesheet" href="/stylesheets/chat.css">
+
+</head>
+
+<body>
+
+
+<div id="userId" style="display:none">
+  <%= user._id %>
+</div>
+
+
+  <div id="frame">
+  	<div id="sidepanel">
+  		<div id="profile">
+  			<div class="wrap">
+          <a href="/" style="color:white">
+    				<img id="profile-img" src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/user-male-icon.png" class="online" alt="" />
+            <p id="username"><%= user.username %></p>
+          </a>
+  			</div>
+  		</div>
+  		<div id="search">
+  			<label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
+  			<input type="text" placeholder="Search contacts..." />
+  		</div>
+  		<div id="contacts">
+  			<ul>
+          <% users.forEach(function(user){ %>
+    				<li class="contact">
+    					<div class="wrap">
+    						<span class="contact-status online"></span>
+    						<img src="http://eabiawak.com/wp-content/uploads/2017/07/photo.png" alt="" />
+    						<div class="meta">
+    							<p class="name"><%= user %></p>
+                  <p class="preview">&nbsp;</p>
+    						</div>
+    					</div>
+    				</li>
+          <% }) %>
+  			</ul>
+  		</div>
+      <% if(user && project.author.id.equals(user._id)){ %>
+    		<div id="bottom-bar">
+    			<a href="/projects/<%= project._id %>/invite"> <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Invite Users</span></button></a>
+    			<a href="/projects/<%= project._id %>/edit"> <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Edit Project</span></button></a>
+        </div>
+      <% } %>
+  	</div>
+  	<div class="content">
+  		<div class="contact-profile">
+  			<img src="https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/chat-circle-blue-512.png" alt="" />
+  			<p><span style="font-weight:bold"><%= project.name %></span> | <%= project.description %></p>
+
+
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+  		</div>
+  		<div class="messages">
+  			<ul>
+          <% project.messages.forEach(function(message){ %>
+            <% if(user && message.author.id.equals(user._id)){ %>
+              <li class="sent">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAukpV31V9zNtu0CQ0QOlJ_aelKU0A6sM-kokoqk6CQSHKPlMuRA" alt="">
+                <p>
+                  <span style="font-weight: bold;"><%= message.author.username %>
+                  </span> <span><%= moment(message.created_at).fromNow() %></span>
+                  <br/>
+                  <%= message.text %>
+                </p>
+              </li>
+            <% } else { %>
+              <li class="replies">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFR4S-hR21RuYz72sd_RlLoh7hrPLCb-0JXzWDstO91R1vO5FpaQ" alt="" />
+                <p>
+                  <span style="font-weight: bold;"><%= message.author.username %>
+                  </span> <span><%= moment(message.created_at).fromNow() %></span>
+                  <br/>
+                  <%= message.text %>
+                </p>
+              </li>
+            <% } %>
+          <% }) %>
+  			</ul>
+  		</div>
+  		<div class="message-input">
+  			<div class="wrap">
+  			<input type="text" placeholder="Write your message..." />
+  			<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+  			<button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+  			</div>
+  		</div>
+  	</div>
+  </div>
+<script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+
+<script >
+
+var socket = io.connect();
+
+var log = $('.messages');
+log.animate({ scrollTop: log.prop('scrollHeight')}, "fast");
+
+$("#profile-img").click(function() {
+	$("#status-options").toggleClass("active");
+});
+
+$(".expand-button").click(function() {
+  $("#profile").toggleClass("expanded");
+	$("#contacts").toggleClass("expanded");
+});
+
+$("#status-options ul li").click(function() {
+	$("#profile-img").removeClass();
+	$("#status-online").removeClass("active");
+	$("#status-away").removeClass("active");
+	$("#status-busy").removeClass("active");
+	$("#status-offline").removeClass("active");
+	$(this).addClass("active");
+
+	if($("#status-online").hasClass("active")) {
+		$("#profile-img").addClass("online");
+	} else if ($("#status-away").hasClass("active")) {
+		$("#profile-img").addClass("away");
+	} else if ($("#status-busy").hasClass("active")) {
+		$("#profile-img").addClass("busy");
+	} else if ($("#status-offline").hasClass("active")) {
+		$("#profile-img").addClass("offline");
+	} else {
+		$("#profile-img").removeClass();
+	};
+
+	$("#status-options").removeClass("active");
+});
+
+function newMessage() {
+	message = $(".message-input input").val();
+	if($.trim(message) == '') {
+		return false;
+	}
+
+   $.ajax({
+     type: 'POST',
+     url: '/projects/<%= project._id %>/messages/',
+     data: {'message': message},
+     success: function(newMessage) {
+       $('.message-input input').val(null);
+       socket.emit("send message", {message: message,
+                                    userId: $("#userId").text(),
+                                    username: $("#username").text()});
+     },
+     error: function() {
+       console.log("Error while sending message!");
+     }
+   });
+};
+
+$('.submit').click(function() {
+  newMessage();
+});
+
+$(window).on('keydown', function(e) {
+  if (e.which == 13) {
+    newMessage();
+    return false;
+  }
+});
+
+
+socket.on("new message", function(data) {
+  var message = data.message;
+  var userId = data.userId;
+  var currentUserId = $("#userId").text();
+  var username = data.username;
+  if(currentUserId === userId) {
+    $('<li class="sent"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAukpV31V9zNtu0CQ0QOlJ_aelKU0A6sM-kokoqk6CQSHKPlMuRA" alt="" /><p><span style="font-weight: bold;">' + username + '</span> <span> a few seconds ago</span> <br/>' + message + '</p></li>').appendTo($('.messages ul'));
+  } else {
+    $('<li class="replies"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFR4S-hR21RuYz72sd_RlLoh7hrPLCb-0JXzWDstO91R1vO5FpaQ" alt="" /><p><span style="font-weight: bold;">' + username + '</span> <span> a few seconds ago</span> <br/>' + message + '</p></li>').appendTo($('.messages ul'));
+  }
+  var log = $('.messages');
+  log.animate({ scrollTop: log.prop('scrollHeight')}, "fast");
+});
+
+//# sourceURL=pen.js
+</script>
+
+
+</body></html>
