@@ -44,4 +44,4 @@
 
 ![1](https://user-images.githubusercontent.com/15314292/41813351-b8a94c8e-7734-11e8-9019-07debffa0af0.png)
 
-![5](https://user-images.githubusercontent.com/15314292/41813370-2e226b4e-7735-11e8-9348-0f5983ca3d86.png)
+![5](https://user-images.githubusercontent.com/15314292/41813389-81264612-7735-11e8-9950-c9f4788fa008.png)
